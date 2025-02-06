@@ -35,7 +35,6 @@ public class FakeStoreProductService implements ProductService {
         FakeStoreProductDto [] list=  restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
         System.out.println(Arrays.spliterator(list).toString());
         List<Product> plist = new ArrayList<>();
-        //convert FakeStoreProductDto to Product
         for(FakeStoreProductDto fakeStoreProductDto: list){
             plist.add(convertDtoToProduct(fakeStoreProductDto));
         }
