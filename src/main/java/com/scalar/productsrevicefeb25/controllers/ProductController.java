@@ -4,6 +4,7 @@ import com.scalar.productsrevicefeb25.exceptions.ProductNotFoundException;
 import com.scalar.productsrevicefeb25.models.Product;
 import com.scalar.productsrevicefeb25.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,9 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
+    @Qualifier("selfProductService")
     @Autowired
-    ProductService productService;
+   ProductService productService;
 
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {

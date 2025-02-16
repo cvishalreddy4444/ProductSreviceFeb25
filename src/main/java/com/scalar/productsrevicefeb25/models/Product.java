@@ -1,16 +1,19 @@
 package com.scalar.productsrevicefeb25.models;
 
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
-
-@Data
-public class Product extends BaseModel {
+@Getter
+@Setter
+@Entity(name = "products")
+public class Product extends BasePojo {
 
     private String title;
     private String description;
     private String imageUrl;
     private double price;
+    @ManyToOne
     private Category category;
 
 }
