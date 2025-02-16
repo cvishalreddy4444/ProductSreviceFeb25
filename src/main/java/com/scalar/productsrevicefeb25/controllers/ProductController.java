@@ -1,8 +1,11 @@
 package com.scalar.productsrevicefeb25.controllers;
 
+import com.scalar.productsrevicefeb25.exceptions.ProductNotFoundException;
 import com.scalar.productsrevicefeb25.models.Product;
 import com.scalar.productsrevicefeb25.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,9 +19,10 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id) {
+    public Product getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
         return productService.getProductbyId(id);
     }
+
 
     @GetMapping()
     public List<Product> getAllProducts() {
@@ -26,8 +30,8 @@ public class ProductController {
     }
 
     @PostMapping()
-    public Product createProduct(@RequestBody Product product) {
-        return product;
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
@@ -44,5 +48,11 @@ public class ProductController {
     public void deleteProduct(@PathVariable("id") Long productId) {
 
     }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<String> handleProductNotFoundException(ProductNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
 
 }

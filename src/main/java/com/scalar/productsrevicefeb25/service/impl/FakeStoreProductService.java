@@ -1,6 +1,7 @@
 package com.scalar.productsrevicefeb25.service.impl;
 
 import com.scalar.productsrevicefeb25.dto.FakeStoreProductDto;
+import com.scalar.productsrevicefeb25.exceptions.ProductNotFoundException;
 import com.scalar.productsrevicefeb25.models.Category;
 import com.scalar.productsrevicefeb25.models.Product;
 import com.scalar.productsrevicefeb25.service.ProductService;
@@ -19,15 +20,15 @@ public class FakeStoreProductService implements ProductService {
     private RestTemplate restTemplate;
     //Make a call to fake store service and get product
     @Override
-    public Product getProductbyId(Long id) {
+    public Product getProductbyId(Long id) throws ProductNotFoundException {
         FakeStoreProductDto fakeStoreProductDto=  restTemplate.getForObject("https://fakestoreapi.com/products/"+id, FakeStoreProductDto.class);
-
+//        throw new RuntimeException("Not implemented");
         //convert FakeStoreProductDto to Product
         if(fakeStoreProductDto!=null){
             return convertDtoToProduct(fakeStoreProductDto);
+        }else{
+            throw new ProductNotFoundException("Product not found with id: "+id);
         }
-
-        return null;
     }
 
     @Override
